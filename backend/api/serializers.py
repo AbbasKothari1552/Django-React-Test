@@ -17,6 +17,11 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         if data['password'] != data['confirmpassword']:
             raise serializers.ValidationError("Passwords do not match")
         return data
+    
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("A user with this email already exists.")
+        return value
 
     def create(self, validated_data):
         validated_data.pop('confirmpassword')
@@ -27,6 +32,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         )
         user.set_password(validated_data['password'])
         user.is_active = False  # User is not active until they verify their email
+        user.save()
         send_otp_via_mail(user.email)
         
         return user

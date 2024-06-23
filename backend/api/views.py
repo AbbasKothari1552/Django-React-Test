@@ -10,6 +10,7 @@ User = get_user_model()
 
 class UserRegistrationView(APIView):
     permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
         if serializer.is_valid():
@@ -18,17 +19,22 @@ class UserRegistrationView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class OTPVerificationView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = OTPVerificationSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.validated_data['email']
             otp = serializer.validated_data['otp']
             try:
-                user = User.objects.get(email=email, otp=otp)
-                user.is_verified = True
-                user.is_active = True
-                user.save()
-                return Response({'detail': 'Email verified successfully.'}, status=status.HTTP_200_OK)
+                user = User.objects.get(email=email)
+                if user.otp == otp:
+                    user.is_verified = True
+                    user.is_active = True
+                    user.save()
+                    return Response({'detail': 'Email verified successfully.'}, status=status.HTTP_200_OK)
+                else:
+                    return Response({'detail': 'Invalid OTP.'}, status=status.HTTP_400_BAD_REQUEST)
             except User.DoesNotExist:
                 return Response({'detail': 'Invalid OTP or email.'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
