@@ -9,9 +9,9 @@ User = get_user_model()
 
 
 class UserRegistrationView(APIView):
+    permission_classes = [AllowAny]
     def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
-        permispermission_classes = [AllowAny]
         if serializer.is_valid():
             serializer.save()
             return Response({'detail': 'User registered successfully. Check your email for OTP.'}, status=status.HTTP_201_CREATED)

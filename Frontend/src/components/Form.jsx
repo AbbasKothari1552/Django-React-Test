@@ -3,13 +3,14 @@ import api from "../api";
 import { useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import "../styles/form.css";
+import LoadingIndicator from "./LoadingIndicator";
 
 function Form({ route, method }) {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [rePassword, setRePassword] = useState("");
+  const [first_name, setfirst_name] = useState("");
+  const [last_name, setlast_name] = useState("");
+  const [confirmpassword, setconfirmpassword] = useState("");
 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ function Form({ route, method }) {
     setLoading(true);
     e.preventDefault();
 
-    if (method === "register" && password !== rePassword) {
+    if (method === "register" && password !== confirmpassword) {
       alert("Passwords do not match!");
       setLoading(false);
       return;
@@ -31,9 +32,9 @@ function Form({ route, method }) {
         password,
         email,
         ...(method === "register" && {
-            rePassword:rePassword,
-          first_name: firstName,
-          last_name: lastName,
+            confirmpassword:confirmpassword,
+          first_name: first_name,
+          last_name: last_name,
         }),
       };
 
@@ -61,15 +62,15 @@ function Form({ route, method }) {
           <input
             className="form-input"
             type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            value={first_name}
+            onChange={(e) => setfirst_name(e.target.value)}
             placeholder="First Name"
           />
           <input
             className="form-input"
             type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
+            value={last_name}
+            onChange={(e) => setlast_name(e.target.value)}
             placeholder="Last Name"
           />
         </>
@@ -92,8 +93,8 @@ function Form({ route, method }) {
         <input
           className="form-input"
           type="password"
-          value={rePassword}
-          onChange={(e) => setRePassword(e.target.value)}
+          value={confirmpassword}
+          onChange={(e) => setconfirmpassword(e.target.value)}
           placeholder="Re-enter Password"
         />
       )}
