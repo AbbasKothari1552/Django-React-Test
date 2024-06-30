@@ -114,7 +114,7 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EXPIRE_AFTER = os.getenv("EXPIRE_AFTER") #link will expire after 2 mins.
 
 # custom user authentication.
-AUTH_USER_MODEL = os.getenv("AUTH_USER_MODEL")
+AUTH_USER_MODEL = 'api.CustomUser'                #os.getenv("AUTH_USER_MODEL")
 
 
 # Password validation
