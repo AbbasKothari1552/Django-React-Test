@@ -3,7 +3,7 @@ import Form from '../components/Form'
 function Register() {
   return (
     <div>
-        return <Form route="/register/" method="register" />
+        return <Form route="/auth/users/" method="register" />
     </div>
   )
 }
