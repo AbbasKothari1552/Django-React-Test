@@ -1,6 +1,6 @@
 import { useState } from "react";
-import api from "../api";
 import { useNavigate } from "react-router-dom";
+import api from "../api"; // for base url.
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import "../styles/form.css";
 import LoadingIndicator from "./LoadingIndicator";
@@ -8,10 +8,9 @@ import LoadingIndicator from "./LoadingIndicator";
 function Form({ route, method }) {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [first_name, setfirst_name] = useState("");
-  const [last_name, setlast_name] = useState("");
-  const [confirmpassword, setconfirmpassword] = useState("");
-
+  const [first_name, setFirstName] = useState("");
+  const [last_name, setLastName] = useState("");
+  const [re_password, setre_password] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -21,7 +20,7 @@ function Form({ route, method }) {
     setLoading(true);
     e.preventDefault();
 
-    if (method === "register" && password !== confirmpassword) {
+    if (method === "register" && password !== re_password) {
       alert("Passwords do not match!");
       setLoading(false);
       return;
@@ -29,12 +28,12 @@ function Form({ route, method }) {
 
     try {
       const payload = {
-        password,
         email,
+        password,
+        re_password,
         ...(method === "register" && {
-            confirmpassword:confirmpassword,
-          first_name: first_name,
-          last_name: last_name,
+          first_name,
+          last_name,
         }),
       };
 
@@ -54,55 +53,58 @@ function Form({ route, method }) {
     }
   };
 
+
   return (
-    <form onSubmit={handleSubmit} className="form-container">
-      <h1>{name}</h1>
-      {method === "register" && (
-        <>
-          <input
-            className="form-input"
-            type="text"
-            value={first_name}
-            onChange={(e) => setfirst_name(e.target.value)}
-            placeholder="First Name"
-          />
-          <input
-            className="form-input"
-            type="text"
-            value={last_name}
-            onChange={(e) => setlast_name(e.target.value)}
-            placeholder="Last Name"
-          />
-        </>
-      )}
-      <input
-        className="form-input"
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-      />
-      <input
-        className="form-input"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-      />
-      {method === "register" && (
+    <div>
+      <form onSubmit={handleSubmit} className="form-container">
+        <h1>{name}</h1>
+        {method === "register" && (
+          <>
+            <input
+              className="form-input"
+              type="text"
+              value={first_name}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="First Name"
+            />
+            <input
+              className="form-input"
+              type="text"
+              value={last_name}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder="Last Name"
+            />
+          </>
+        )}
+        <input
+          className="form-input"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+        />
         <input
           className="form-input"
           type="password"
-          value={confirmpassword}
-          onChange={(e) => setconfirmpassword(e.target.value)}
-          placeholder="Re-enter Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
         />
-      )}
-      {loading && <LoadingIndicator />}
-      <button className="form-button" type="submit">
-        {name}
-      </button>
-    </form>
+        {method === "register" && (
+          <input
+            className="form-input"
+            type="password"
+            value={re_password}
+            onChange={(e) => setre_password(e.target.value)}
+            placeholder="Re-enter Password"
+          />
+        )}
+        {loading && <LoadingIndicator />}
+        <button className="form-button" type="submit">
+          {name}
+        </button>
+      </form>
+    </div>
   );
 }
 

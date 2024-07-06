@@ -32,34 +32,25 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-# rest framework
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-    ],
-}
-
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-}
-
+SITE_ID = 1
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
+    "django.contrib.sites",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "api",
-    "rest_framework",
+    
+    "djoser",
     "corsheaders",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "rest_framework_simplejwt",
+    # apps
+    'api',
 ]
 
 MIDDLEWARE = [
@@ -70,7 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    "corsheaders.middleware.CorsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -93,7 +84,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -104,6 +94,57 @@ DATABASES = {
     }
 }
 
+# allow frontend to request backend
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES' : [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SIMPLE_JWT = {
+   'AUTH_HEADER_TYPES': ('JWT',),
+   'ACCESS_TOKEN_LIFETIME' : timedelta(minutes=60),
+   'REFRESH_TOKEN_LIFETIME' : timedelta(days=1),
+   'AUTH_TOKEN_CLASSES' : (
+       'rest_framework_simplejwt.tokens.AccessToken',
+   )
+}
+
+DJOSER = {
+    'LOGIN_FIELD' : 'email',
+    'PASSWORD_RESET_CONFIRM_URL' : 'password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL' : 'email/reset/confirm/{uid}/{token}',
+    'USER_CREATE_PASSWORD_RETYPE' : True,
+    'USERNAME_CHANGED_EMAIL_CONFIRMATION' : True,
+    'PASSWORD_CHANGED_EMAIL_CONFIRMATION' : True,
+    'SEND_CONFIRMATION_EMAIL' : True,
+    'SET_USERNAME_RETYPE' :True,
+    'SET_PASSWORD_RETYPE' :True,
+    'ACTIVATION_URL' : 'activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL' : True,
+    'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ['http://localhost:5173'],
+    'SERIALIZERS' : {
+        'user_create' : 'api.serializers.UserCreateSerializer',
+        'user' : 'api.serializers.UserCreateSerializer',
+        'current-user' : 'api.serializers.UserCreateSerializer',
+        'user_delete' : 'djoser.serializers.UserDeleteSerializer',
+
+    }
+}
+
+
 # Email Verifucation For user registeration.
 EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
 EMAIL_HOST = os.getenv("EMAIL_HOST")
@@ -113,8 +154,14 @@ EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EXPIRE_AFTER = os.getenv("EXPIRE_AFTER") #link will expire after 2 mins.
 
+<<<<<<< HEAD
 # custom user authentication.
 AUTH_USER_MODEL = 'api.CustomUser'                #os.getenv("AUTH_USER_MODEL")
+=======
+
+# custom user model path.
+AUTH_USER_MODEL = os.getenv("AUTH_USER_MODEL")
+>>>>>>> 382b6a0e9ecbbc7e0052383ee08ef6425ce73692
 
 
 # Password validation
@@ -141,7 +188,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -158,5 +205,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWS_CREDENTIALS = True
+# Allowed all type of password without any restriction.
+AUTH_PASSWORD_VALIDATORS = []

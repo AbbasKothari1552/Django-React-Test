@@ -2,10 +2,11 @@ import React from 'react'
 import './App.css'
 import { BrowserRouter , Route , Routes , Navigate } from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute'
-import Home from './pages/Home'
 import LandingPage from './pages/LandingPage'
-import Login from './pages/Login'
 import Register from './pages/Register'
+import Activate from './pages/Activate'
+import Home from './pages/Home'
+import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 
 function Logout() {
@@ -19,27 +20,24 @@ function RegisterAndLogout() {
 }
 
 function App() {
-
- 
-
   return (
-    <BrowserRouter>
-    <Routes>
-      <Route 
-      path="/"
-      element={
-        <ProtectedRoute>
-          <Home />
-        </ProtectedRoute>
-      }
-      />
-      <Route path="/landingpage" element={<LandingPage />}/>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="*" element={<NotFound />}/>
-    </Routes>
-    
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route 
+            path="/" 
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            } 
+          />
+          <Route path="/landingpage" element={<LandingPage />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/activate/:uid/:token" element={<Activate />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
   )
 }
 

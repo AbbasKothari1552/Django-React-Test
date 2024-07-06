@@ -3,7 +3,7 @@ import Form from '../components/Form'
 function Login() {
   return (
     <div>
-         return <Form route="/api/token/" method="login" />
+         return <Form route="/auth/jwt/create/" method="login" />
     </div>
   )
 }
