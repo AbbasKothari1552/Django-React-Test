@@ -1,3 +1,4 @@
 virt
 backend/.env
 Frontend/.env
+node_modules
