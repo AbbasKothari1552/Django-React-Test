@@ -38,7 +38,9 @@ function Form({ route, method }) {
       };
 
       const res = await api.post(route, payload);
-
+      console.log(res.data);
+      console.log(res.data.access);
+      console.log(res.data.refresh);
       if (method === "login") {
         localStorage.setItem(ACCESS_TOKEN, res.data.access);
         localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
