@@ -1,2 +1,11 @@
-from django.shortcuts import render
+# *** On hold *** // *Do not remove*
+
+# from djoser.views import TokenCreateView
+# from .serializers import CustomTokenCreateSerializer
+
+# class CustomTokenCreateView(TokenCreateView):
+#     serializer_class = CustomTokenCreateSerializer
+
+
+
 

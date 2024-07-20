@@ -47,10 +47,17 @@ INSTALLED_APPS = [
     "djoser",
     "corsheaders",
     "rest_framework",
-    "rest_framework.authtoken",
+    'rest_framework.authtoken',
     "rest_framework_simplejwt",
+    'rest_framework_simplejwt.token_blacklist',
+
     # apps
     'api',
+    'stores',
+    'products',
+    'categories',
+    'fields',
+    'reviews',
 ]
 
 MIDDLEWARE = [
@@ -138,8 +145,9 @@ DJOSER = {
     'SERIALIZERS' : {
         'user_create' : 'api.serializers.UserCreateSerializer',
         'user' : 'api.serializers.UserCreateSerializer',
-        'current-user' : 'api.serializers.UserCreateSerializer',
+        'current_user' : 'api.serializers.UserCreateSerializer',
         'user_delete' : 'djoser.serializers.UserDeleteSerializer',
+        # 'token_create': 'api.serializers.CustomTokenCreateSerializer',  # *do not remove
 
     }
 }
@@ -202,3 +210,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Allowed all type of password without any restriction.
 AUTH_PASSWORD_VALIDATORS = []
+
+
